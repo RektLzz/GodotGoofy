@@ -1,1 +1,13 @@
+Sprite2D
+ParallaxLayer
+ParallaxBackground
+Button
+Camera2D
+AnimatedSprite2D
+CollisionShape2D
+CharacterBody2D
+TileMap
+RigidBody2D
+StaticBody2D
+ShapeCast2D
 Node2D

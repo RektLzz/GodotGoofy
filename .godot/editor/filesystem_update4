@@ -1,1 +1,5 @@
-res://scene.tscn
+res://MainWorld.tscn
+res://Player.tscn
+res://MainMenu.tscn
+res://MainMenu.gd
+res://Background.tscn
