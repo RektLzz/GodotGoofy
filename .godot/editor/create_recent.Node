@@ -1,3 +1,4 @@
+CPUParticles2D
 Timer
 Marker2D
 Area2D
@@ -11,5 +12,3 @@ ParallaxLayer
 ParallaxBackground
 Button
 Camera2D
-AnimatedSprite2D
-CharacterBody2D
