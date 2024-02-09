@@ -5,32 +5,52 @@
 [sub_resource type="GDScript" id="GDScript_dtn1b"]
 script/source = "extends CharacterBody2D
 
+const SPEED = 200.0
+const JUMP_VELOCITY = -300.0
+var gravity 
+@onready var sprite : AnimatedSprite2D
+@onready var marker : Marker2D
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
-
-
+func _ready():
+	# Get the gravity from the project settings to be synced with RigidBody nodes.
+	gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
+	sprite = $AnimatedSprite2D
+	marker = $Marker2D
+	set_process_input(true)
+	
+func _input(event):
+	if Input.is_action_just_pressed(\"click\"):
+		var bullet = preload(\"res://Bullet.tscn\").instantiate()
+		add_child(bullet)
+		bullet.position = position
+		bullet.direction = (get_global_mouse_position() - global_position).normalized()
+	
 func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
 
 	# Handle jump.
-	if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
+	if Input.is_action_just_pressed(\"Jump\") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+	
+	if Input.is_action_just_pressed(\"K_Left\"):
+		sprite.flip_h = true
+	elif Input.is_action_just_pressed(\"K_Right\"):
+		sprite.flip_h = false
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction = Input.get_axis(\"ui_left\", \"ui_right\")
+	var direction = Input.get_axis(\"K_Left\", \"K_Right\")
 	if direction:
 		velocity.x = direction * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
-
+		
 	move_and_slide()
+	
+	
 "
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u2edj"]
@@ -94,10 +114,15 @@ sprite_frames = SubResource("SpriteFrames_vn4nh")
 animation = &"Idle"
 frame_progress = 0.895027
 
+[node name="Marker2D" type="Marker2D" parent="."]
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 2)
 shape = SubResource("RectangleShape2D_lrwi6")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(1, 0)
+offset = Vector2(0, -55)
 zoom = Vector2(3.75, 3.75)
+process_callback = 0
+position_smoothing_enabled = true
