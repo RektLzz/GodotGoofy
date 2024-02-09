@@ -1,6 +1,1 @@
-res://MainWorld.tscn
-res://Player.tscn
-res://MainMenu.tscn
-res://Background.tscn
 res://Bullet.tscn
-res://Bullet.gd
