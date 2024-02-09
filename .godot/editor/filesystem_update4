@@ -1,1 +1,5 @@
+res://MainWorld.tscn
+res://Player.tscn
 res://Bullet.tscn
+res://Bullet.gd
+res://CPUParticles2D.gd
