@@ -1,0 +1,73 @@
+[gd_scene load_steps=7 format=3 uid="uid://bv7ovmp3ww3i1"]
+
+[ext_resource type="Script" path="res://Scripts/Bullet.gd" id="1_0b0pq"]
+[ext_resource type="Texture2D" uid="uid://bbs1hq13ogqw4" path="res://Sprites/Projectiles/bullet.png" id="2_iredo"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xa010"]
+radius = 3.0
+
+[sub_resource type="Gradient" id="Gradient_acmtj"]
+colors = PackedColorArray(0, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Curve" id="Curve_7e728"]
+min_value = -1.0
+_data = [Vector2(0.03125, -1), 0.0, 0.0, 0, 0, Vector2(0.973214, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_lw5kx"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Area2D" type="Area2D"]
+top_level = true
+collision_layer = 4
+script = ExtResource("1_0b0pq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_xa010")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.505882, 1, 1, 1)
+position = Vector2(4.76837e-07, 5.68434e-14)
+texture = ExtResource("2_iredo")
+
+[node name="Timer" type="Timer" parent="."]
+process_callback = 0
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="Trail" type="CPUParticles2D" parent="."]
+amount = 80
+lifetime = 0.5
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 11.4
+linear_accel_min = -1.65
+linear_accel_max = 39.34
+angle_max = 720.0
+scale_amount_min = 0.5
+color = Color(0, 0.741176, 1, 1)
+color_ramp = SubResource("Gradient_acmtj")
+hue_variation_max = 0.1
+hue_variation_curve = SubResource("Curve_7e728")
+
+[node name="Boom" type="CPUParticles2D" parent="."]
+amount = 300
+lifetime = 0.75
+explosiveness = 0.77
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 66.93
+scale_amount_min = 0.3
+scale_amount_max = 2.0
+color = Color(0, 0.803922, 1, 1)
+color_ramp = SubResource("Gradient_lw5kx")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

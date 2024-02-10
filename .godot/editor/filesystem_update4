@@ -1,5 +1,3 @@
-res://MainWorld.tscn
-res://Player.tscn
-res://Bullet.tscn
-res://Bullet.gd
-res://CPUParticles2D.gd
+res://Scenes/Player.tscn
+res://Scenes/MainWorld.tscn
+res://Scenes/Projectiles/Bullet.tscn
