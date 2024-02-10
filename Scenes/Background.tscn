@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://b4bblnar2fwl"]
+
+[ext_resource type="Texture2D" uid="uid://cmstq541fcgr7" path="res://Sprites/Background/Summit_Background_5.png" id="1_qmxf2"]
+[ext_resource type="Texture2D" uid="uid://c7ub4hyhpq0xg" path="res://Sprites/Background/Summit_Background_4.png" id="2_tf670"]
+[ext_resource type="Texture2D" uid="uid://t50npeuiafgp" path="res://Sprites/Background/Summit_Background_3.png" id="3_ncjob"]
+
+[node name="ParallaxBackground" type="ParallaxBackground"]
+
+[node name="Far" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0, 1)
+motion_mirroring = Vector2(425, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Far"]
+texture = ExtResource("1_qmxf2")
+
+[node name="Medium" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.25, 1)
+motion_mirroring = Vector2(425, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Medium"]
+texture = ExtResource("2_tf670")
+
+[node name="Close" type="ParallaxLayer" parent="."]
+motion_scale = Vector2(0.5, 1)
+motion_mirroring = Vector2(425, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Close"]
+texture = ExtResource("3_ncjob")
