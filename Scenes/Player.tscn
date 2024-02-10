@@ -1,10 +1,6 @@
-[gd_scene load_steps=37 format=3 uid="uid://866rmtc8f47j"]
+[gd_scene load_steps=11 format=3 uid="uid://866rmtc8f47j"]
 
-[ext_resource type="Texture2D" uid="uid://d3dua1lkl2vc" path="res://Sprites/Player/Player_Falling.png" id="1_3sf2a"]
-[ext_resource type="Texture2D" uid="uid://cs0rkxond0cjw" path="res://Sprites/Player/Player_Idle.png" id="1_8dxwg"]
-[ext_resource type="Texture2D" uid="uid://cdyhgdeated15" path="res://Sprites/Player/Player_Death.png" id="1_ur54h"]
-[ext_resource type="Texture2D" uid="uid://dx6wnk7k826y7" path="res://Sprites/Player/Player_Run.png" id="2_cs2in"]
-[ext_resource type="Texture2D" uid="uid://c0fh1luc4gyy3" path="res://Sprites/Player/Player_Rising.png" id="3_5mtww"]
+[ext_resource type="Texture2D" uid="uid://c6j0u3s83t14m" path="res://Sprites/Player/Player_Spritesheet.png" id="1_nvqm5"]
 
 [sub_resource type="GDScript" id="GDScript_dtn1b"]
 script/source = "extends CharacterBody2D
@@ -12,16 +8,22 @@ script/source = "extends CharacterBody2D
 const SPEED = 200.0
 const JUMP_VELOCITY = -300.0
 var gravity 
-@onready var sprite : AnimatedSprite2D
+@onready var sprite : Sprite2D
+@onready var animator : AnimationPlayer
 @onready var marker : Marker2D
 var jumped = false
-
+var groundDust : CPUParticles2D
+var groundDustPos
 
 func _ready():
 	# Get the gravity from the project settings to be synced with RigidBody nodes.
 	gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
-	sprite = $AnimatedSprite2D
+	sprite = $Sprite2D
 	marker = $Marker2D
+	animator = $AnimationPlayer
+	groundDust = $groundDustParticles
+	groundDust.emitting = false
+	
 	set_process_input(true)
 	
 func _input(event):
@@ -48,19 +50,25 @@ func _physics_process(delta):
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction = Input.get_axis(\"K_Left\", \"K_Right\")
 	
+	if Input.is_action_just_pressed(\"K_Left\") or Input.is_action_just_pressed(\"K_Right\"):
+		if is_on_floor():
+			var turnDust = preload(\"res://turnDust.tscn\").instantiate()
+			add_child(turnDust)
+			turnDust.scale.x *= sign(direction)
+	
 	if direction:
 		velocity.x = direction * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 	
 	if direction != 0 and not jumped:
-		sprite.play(\"Run\")
+		animator.play(\"Run\")
 	elif not jumped:
-		sprite.play(\"Idle\")
+		animator.play(\"Idle\")
 	elif velocity.y <= 0:
-		sprite.play(\"Rising\")
+		animator.play(\"Rising\")
 	else:
-		sprite.play(\"Falling\")
+		animator.play(\"Falling\")
 		
 	move_and_slide()
 	
@@ -69,244 +77,118 @@ func flip():
 		sprite.flip_h = true
 	elif velocity.x > 0:
 		sprite.flip_h = false
+
+func groundDustEmission():
+	if is_on_floor():
+		groundDust.emitting = true
 "
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fdgek"]
-atlas = ExtResource("1_ur54h")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_tmn21"]
-atlas = ExtResource("1_ur54h")
-region = Rect2(16, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_pxsq8"]
-atlas = ExtResource("1_ur54h")
-region = Rect2(32, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_3j327"]
-atlas = ExtResource("1_ur54h")
-region = Rect2(48, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_netn1"]
-atlas = ExtResource("1_ur54h")
-region = Rect2(64, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6t0b7"]
-atlas = ExtResource("1_ur54h")
-region = Rect2(80, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4yhkm"]
-atlas = ExtResource("1_ur54h")
-region = Rect2(96, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hrgah"]
-atlas = ExtResource("1_ur54h")
-region = Rect2(112, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_g2cyn"]
-atlas = ExtResource("1_3sf2a")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4uqs2"]
-atlas = ExtResource("1_3sf2a")
-region = Rect2(16, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5d2ip"]
-atlas = ExtResource("1_3sf2a")
-region = Rect2(32, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_w7s7s"]
-atlas = ExtResource("1_3sf2a")
-region = Rect2(48, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_haysq"]
-atlas = ExtResource("1_8dxwg")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_orvx0"]
-atlas = ExtResource("1_8dxwg")
-region = Rect2(16, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_v7xfh"]
-atlas = ExtResource("1_8dxwg")
-region = Rect2(32, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_f1u0j"]
-atlas = ExtResource("1_8dxwg")
-region = Rect2(48, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mobmf"]
-atlas = ExtResource("1_8dxwg")
-region = Rect2(64, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_g3c1c"]
-atlas = ExtResource("1_8dxwg")
-region = Rect2(80, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_yin61"]
-atlas = ExtResource("3_5mtww")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_i1rs7"]
-atlas = ExtResource("3_5mtww")
-region = Rect2(16, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xp6hq"]
-atlas = ExtResource("3_5mtww")
-region = Rect2(32, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jawti"]
-atlas = ExtResource("3_5mtww")
-region = Rect2(48, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_akro6"]
-atlas = ExtResource("2_cs2in")
-region = Rect2(0, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_n8htl"]
-atlas = ExtResource("2_cs2in")
-region = Rect2(16, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6lppb"]
-atlas = ExtResource("2_cs2in")
-region = Rect2(32, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bwrsl"]
-atlas = ExtResource("2_cs2in")
-region = Rect2(48, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_00ss8"]
-atlas = ExtResource("2_cs2in")
-region = Rect2(64, 0, 16, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gu6yh"]
-atlas = ExtResource("2_cs2in")
-region = Rect2(80, 0, 16, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_vn4nh"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fdgek")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_tmn21")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_pxsq8")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_3j327")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_netn1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6t0b7")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4yhkm")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hrgah")
-}],
-"loop": true,
-"name": &"Death",
-"speed": 11.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_g2cyn")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4uqs2")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5d2ip")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_w7s7s")
-}],
-"loop": false,
-"name": &"Falling",
-"speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_haysq")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_orvx0")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_v7xfh")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_f1u0j")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_mobmf")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_g3c1c")
-}],
-"loop": true,
-"name": &"Idle",
-"speed": 6.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_yin61")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_i1rs7")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_xp6hq")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jawti")
-}],
-"loop": false,
-"name": &"Rising",
-"speed": 7.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_akro6")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_n8htl")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_6lppb")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_bwrsl")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_00ss8")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gu6yh")
-}],
-"loop": true,
-"name": &"Run",
-"speed": 8.0
-}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lrwi6"]
 size = Vector2(5, 10)
 
+[sub_resource type="Gradient" id="Gradient_1tv6f"]
+offsets = PackedFloat32Array(0.00510204, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Curve" id="Curve_xyofu"]
+min_value = -1.0
+_data = [Vector2(0.03125, -1), 0.0, 0.0, 0, 0, Vector2(0.973214, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Animation" id="Animation_5fp67"]
+resource_name = "Falling"
+length = 0.5505
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.149836, 0.295429, 0.451793),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [8, 9, 10, 11]
+}
+
+[sub_resource type="Animation" id="Animation_d4ty3"]
+resource_name = "Idle"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.136997, 0.27617, 0.41752, 0.554517, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [32, 33, 34, 35, 36, 37]
+}
+
+[sub_resource type="Animation" id="Animation_r77u1"]
+resource_name = "Rising"
+length = 0.477
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.130359, 0.258541, 0.382371),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [16, 17, 18, 19]
+}
+
+[sub_resource type="Animation" id="Animation_lhknp"]
+resource_name = "new_animation"
+length = 0.627
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.108705, 0.215015, 0.321544, 0.432316, 0.540912),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.2, 0.478237),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"groundDustEmission"
+}, {
+"args": [],
+"method": &"groundDustEmission"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cqcai"]
+_data = {
+"Falling": SubResource("Animation_5fp67"),
+"Idle": SubResource("Animation_d4ty3"),
+"Rising": SubResource("Animation_r77u1"),
+"Run": SubResource("Animation_lhknp")
+}
+
 [node name="CharacterBody2D" type="CharacterBody2D"]
 collision_layer = 2
 script = SubResource("GDScript_dtn1b")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-sprite_frames = SubResource("SpriteFrames_vn4nh")
-animation = &"Falling"
-
-[node name="Marker2D" type="Marker2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0.5, 2)
@@ -318,3 +200,34 @@ offset = Vector2(0, -55)
 zoom = Vector2(3.75, 3.75)
 process_callback = 0
 position_smoothing_enabled = true
+
+[node name="groundDustParticles" type="CPUParticles2D" parent="."]
+position = Vector2(1, 7)
+emitting = false
+amount = 9
+lifetime = 0.2
+one_shot = true
+speed_scale = 1.05
+explosiveness = 0.57
+emission_shape = 3
+emission_rect_extents = Vector2(2.635, 0.465)
+direction = Vector2(0, 0)
+spread = 0.0
+gravity = Vector2(0, 0)
+linear_accel_min = -1.65
+linear_accel_max = 39.34
+angle_max = 720.0
+color_ramp = SubResource("Gradient_1tv6f")
+hue_variation_max = 0.03
+hue_variation_curve = SubResource("Curve_xyofu")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_cqcai")
+}
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_nvqm5")
+hframes = 8
+vframes = 5
+frame = 8

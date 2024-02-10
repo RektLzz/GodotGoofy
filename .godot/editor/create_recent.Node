@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 AnimationPlayer
+=======
+Sprite2D
+AnimationPlayer
+GPUParticles2D
+>>>>>>> main
 CPUParticles2D
 Timer
 GPUParticles2D

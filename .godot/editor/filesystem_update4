@@ -4,3 +4,5 @@ res://Scenes/Player.tscn
 res://Scripts/Bullet.gd
 res://Scenes/Effects/Explosion.tscn
 res://Scenes/Effects/Explosion.gd
+res://turnDust.tscn
+res://turnDust.gd
