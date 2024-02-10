@@ -1,3 +1,5 @@
 res://Scenes/Player.tscn
 res://Scenes/MainWorld.tscn
 res://Scenes/Projectiles/Bullet.tscn
+res://turnDust.tscn
+res://turnDust.gd

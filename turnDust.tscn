@@ -1,0 +1,42 @@
+[gd_scene load_steps=4 format=3 uid="uid://c28mcm31kh6pq"]
+
+[ext_resource type="Script" path="res://turnDust.gd" id="1_mpg6a"]
+
+[sub_resource type="Gradient" id="Gradient_u1ylb"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Curve" id="Curve_8x3vp"]
+min_value = -1.0
+_data = [Vector2(0.03125, -1), 0.0, 0.0, 0, 0, Vector2(0.973214, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="TurnDust" type="Node2D"]
+position = Vector2(0, 7)
+script = ExtResource("1_mpg6a")
+
+[node name="TurnParticles" type="CPUParticles2D" parent="."]
+position = Vector2(1, 0)
+emitting = false
+amount = 46
+lifetime = 0.3
+one_shot = true
+speed_scale = 1.05
+explosiveness = 0.75
+emission_shape = 3
+emission_rect_extents = Vector2(1, 0.03)
+direction = Vector2(-24.89, -10.36)
+spread = 26.38
+gravity = Vector2(0, 0)
+initial_velocity_min = 9.43
+initial_velocity_max = 9.44
+angular_velocity_min = -176.6
+angular_velocity_max = -54.34
+linear_accel_min = -4.92
+linear_accel_max = -4.92
+radial_accel_min = -4.92
+radial_accel_max = -4.92
+scale_amount_min = 1.1
+scale_amount_max = 1.1
+color_ramp = SubResource("Gradient_u1ylb")
+hue_variation_max = 0.03
+hue_variation_curve = SubResource("Curve_8x3vp")
