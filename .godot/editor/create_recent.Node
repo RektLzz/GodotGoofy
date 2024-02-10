@@ -1,5 +1,7 @@
+AnimationPlayer
 CPUParticles2D
 Timer
+GPUParticles2D
 Marker2D
 Area2D
 Node2D
@@ -11,4 +13,3 @@ DirectionalLight2D
 ParallaxLayer
 ParallaxBackground
 Button
-Camera2D

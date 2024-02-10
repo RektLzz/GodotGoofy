@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2kr6q8a62pto"]
+
+[ext_resource type="Script" path="res://Scripts/Effects/Explosion.gd" id="1_qfm4i"]
+
+[sub_resource type="Gradient" id="Gradient_ux4kl"]
+offsets = PackedFloat32Array(0, 0.443878, 0.867347, 1)
+colors = PackedColorArray(0, 1, 1, 1, 0.101961, 0.882353, 1, 1, 0.215686, 0.223529, 1, 1, 0, 1, 1, 0)
+
+[node name="CPUParticles2D" type="CPUParticles2D"]
+top_level = true
+emitting = false
+amount = 300
+lifetime = 0.3
+one_shot = true
+explosiveness = 0.83
+lifetime_randomness = 0.48
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector2(0, 0)
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 52.49
+initial_velocity_max = 68.89
+damping_min = 100.0
+damping_max = 100.0
+scale_amount_min = 0.5
+scale_amount_max = 1.75
+color_ramp = SubResource("Gradient_ux4kl")
+script = ExtResource("1_qfm4i")
