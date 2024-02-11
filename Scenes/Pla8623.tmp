@@ -22,9 +22,6 @@ var bullet = preload(\"res://Scenes/Projectiles/Bullet.tscn\")
 var turnDust = preload(\"res://Scenes/Effects/turnDust.tscn\")
 
 func _ready():
-	# Set player in the player group
-	add_to_group(\"players\")
-	
 	# Get the gravity from the project settings to be synced with RigidBody nodes.
 	sprite = $Sprite2D
 	animator = $AnimationPlayer
@@ -37,7 +34,7 @@ func _input(event):
 	if Input.is_action_just_pressed(\"click\"):
 		var new_bullet = bullet.instantiate()
 		add_child(new_bullet)
-		new_bullet._spawn(position, playerPointing(), 400, 10, 5, \"enemies\", self)
+		new_bullet._spawn(position, playerPointing(), 400, 10, 5, \"Enemy\")
 	
 func _physics_process(delta):
 	# Add the gravity.
@@ -64,12 +61,11 @@ func _physics_process(delta):
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var direction = Input.get_axis(\"K_Left\", \"K_Right\")
 	
-	if is_on_floor() and direction != sign(velocity.x):
-		var new_turnDust = turnDust.instantiate()
-		new_turnDust.position = Vector2(0,7)
-		new_turnDust.emitting = true
-		new_turnDust.one_shot = true
-		add_child(new_turnDust)
+	if Input.is_action_just_pressed(\"K_Left\") or Input.is_action_just_pressed(\"K_Right\"):
+		if is_on_floor():
+			var new_turnDust = turnDust.instantiate()
+			add_child(new_turnDust)
+			new_turnDust.scale.x *= sign(direction)
 	
 	if direction:
 		velocity.x = direction * SPEED
@@ -84,7 +80,7 @@ func _physics_process(delta):
 		animator.play(\"Rising\")
 	else:
 		animator.play(\"Falling\")
-	
+		
 	move_and_slide()
 	
 func flip():
@@ -206,7 +202,6 @@ _data = {
 
 [node name="CharacterBody2D" type="CharacterBody2D"]
 collision_layer = 2
-collision_mask = 3
 script = SubResource("GDScript_dtn1b")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

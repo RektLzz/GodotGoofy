@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://c28mcm31kh6pq"]
 
-[ext_resource type="Script" path="res://turnDust.gd" id="1_mpg6a"]
+[ext_resource type="Script" path="res://Scripts/Effects/DeleteEffect.gd" id="1_x6ugw"]
 
 [sub_resource type="Gradient" id="Gradient_u1ylb"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
@@ -10,11 +10,7 @@ min_value = -1.0
 _data = [Vector2(0.03125, -1), 0.0, 0.0, 0, 0, Vector2(0.973214, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[node name="TurnDust" type="Node2D"]
-position = Vector2(0, 7)
-script = ExtResource("1_mpg6a")
-
-[node name="TurnParticles" type="CPUParticles2D" parent="."]
+[node name="TurnParticles" type="CPUParticles2D"]
 position = Vector2(1, 0)
 emitting = false
 amount = 46
@@ -40,3 +36,4 @@ scale_amount_max = 1.1
 color_ramp = SubResource("Gradient_u1ylb")
 hue_variation_max = 0.03
 hue_variation_curve = SubResource("Curve_8x3vp")
+script = ExtResource("1_x6ugw")

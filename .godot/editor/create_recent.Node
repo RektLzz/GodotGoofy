@@ -1,21 +1,14 @@
-<<<<<<< HEAD
-AnimationPlayer
-=======
-Sprite2D
-AnimationPlayer
-GPUParticles2D
->>>>>>> main
-CPUParticles2D
+Delete_Effect
 Timer
-GPUParticles2D
-Marker2D
-Area2D
-Node2D
-Polygon2D
 Sprite2D
 CollisionShape2D
+Area2D
+CPUParticles2D
+AnimationPlayer
+AnimationPlayer
+GPUParticles2D
+GPUParticles2D
+Marker2D
+Node2D
+Polygon2D
 StaticBody2D
-DirectionalLight2D
-ParallaxLayer
-ParallaxBackground
-Button

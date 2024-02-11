@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b2kr6q8a62pto"]
 
-[ext_resource type="Script" path="res://Scripts/Effects/Explosion.gd" id="1_qfm4i"]
+[ext_resource type="Script" path="res://Scripts/Effects/DeleteEffect.gd" id="1_poo2u"]
 
 [sub_resource type="Gradient" id="Gradient_ux4kl"]
 offsets = PackedFloat32Array(0, 0.443878, 0.867347, 1)
@@ -26,4 +26,4 @@ damping_max = 100.0
 scale_amount_min = 0.5
 scale_amount_max = 1.75
 color_ramp = SubResource("Gradient_ux4kl")
-script = ExtResource("1_qfm4i")
+script = ExtResource("1_poo2u")

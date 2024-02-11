@@ -1,8 +1,5 @@
-res://Scenes/Projectiles/Bullet.tscn
-res://Scenes/MainWorld.tscn
 res://Scenes/Player.tscn
+res://Scenes/MainWorld.tscn
+res://Scenes/Effects/turnDust.tscn
 res://Scripts/Bullet.gd
-res://Scenes/Effects/Explosion.tscn
-res://Scenes/Effects/Explosion.gd
-res://turnDust.tscn
-res://turnDust.gd
+res://Scenes/Projectiles/Bullet.tscn
