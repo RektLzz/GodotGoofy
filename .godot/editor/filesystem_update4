@@ -1,5 +1,7 @@
-res://Scenes/Player.tscn
 res://Scenes/MainWorld.tscn
-res://Scenes/Effects/turnDust.tscn
-res://Scripts/Bullet.gd
+res://Scenes/Player.tscn
 res://Scenes/Projectiles/Bullet.tscn
+res://Scenes/Effects/SpeedBoost.tscn
+res://Scripts/Bullet.gd
+res://Scenes/Effects/Trail.tscn
+res://Scenes/Projectiles/Bullet1.tscn

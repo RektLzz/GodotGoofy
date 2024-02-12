@@ -7,8 +7,8 @@ var lifetime : float
 var target : String
 var shooter
 
-# Preload sprite
-@export var Sprite : Texture2D
+# Other shit
+var collided
 
 # Preload the trail scene
 @export var TrailParticle : PackedScene
@@ -21,6 +21,7 @@ func _on_lifetime_timeout():
 
 func _on_body_entered(body):
 	if body != shooter:
+		collided = true
 		_bulletEffect(true, DeathParticle, global_position, true, true)
 		
 		if body.is_in_group(target) and body.has_method("take_damage"):
@@ -30,7 +31,8 @@ func _on_body_entered(body):
 	
 func _physics_process(delta):
 	position += velocity * delta * direction
-	_bulletEffect(false, TrailParticle, global_position, true, false)
+	if not collided:
+		_bulletEffect(false, TrailParticle, global_position, true, true)
 
 # Play Effect
 func _bulletEffect(destroy_bullet: bool, _particleEffect: PackedScene = null, effect_position: Vector2 = Vector2.ZERO, emitting: bool = true, one_shot: bool = true):
@@ -55,6 +57,8 @@ func _spawn(pos, dir, vel, dmg, lft, trg, sht):
 	target = trg
 	shooter = sht
 	_set_lifetime_timer()
+
+	collided = false
 
 func _set_lifetime_timer():
 	$Lifetime.wait_time = lifetime

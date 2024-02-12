@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://bv7ovmp3ww3i1"]
+
+[ext_resource type="Script" path="res://Scripts/StraightBullet.gd" id="1_m2fdt"]
+[ext_resource type="PackedScene" uid="uid://dcxuamoixe2e2" path="res://Scenes/Effects/Trail.tscn" id="2_ccmhg"]
+[ext_resource type="PackedScene" uid="uid://b2kr6q8a62pto" path="res://Scenes/Effects/Explosion.tscn" id="3_vjlvr"]
+[ext_resource type="Texture2D" uid="uid://bbs1hq13ogqw4" path="res://Sprites/Projectiles/bullet.png" id="4_cvg87"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xa010"]
+radius = 3.0
+
+[node name="Area2D" type="Area2D"]
+top_level = true
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_m2fdt")
+TrailParticle = ExtResource("2_ccmhg")
+DeathParticle = ExtResource("3_vjlvr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_xa010")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.505882, 1, 1, 1)
+position = Vector2(4.76837e-07, 5.68434e-14)
+texture = ExtResource("4_cvg87")
+
+[node name="Lifetime" type="Timer" parent="."]
+process_callback = 0
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Lifetime" to="." method="_on_lifetime_timeout"]
