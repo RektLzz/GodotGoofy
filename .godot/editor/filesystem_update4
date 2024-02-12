@@ -5,3 +5,4 @@ res://Scenes/Effects/SpeedBoost.tscn
 res://Scripts/Bullet.gd
 res://Scenes/Effects/Trail.tscn
 res://Scenes/Projectiles/Bullet1.tscn
+res://Scripts/StraightBullet.gd
